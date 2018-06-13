@@ -117,36 +117,44 @@ int main(){
 	    int number = 0;
 	    //takes input from 2 files, firstName.txt and lastName.txt and puts into vectors
    		char fileName[25] = "firstName.txt"; 
-    		inFile.open(fileName);
-    	inFile.getline(fileName, 10000);
-    	temp = strtok(fileName, " ");
-    	while(temp != NULL){
-      		firstNames.push_back(temp);
-      		temp = strtok(NULL, " ");
-    	}
-   	 char fileName2[25] = "lastName.txt";
-   	 inFile2.open(fileName2);
-    	inFile2.getline(fileName2, 10000);
-    	temp1 = strtok(fileName2, " ");
-    	while(temp1 != NULL){
-      		lastNames.push_back(temp1);
-      		temp1 = strtok(NULL, " ");
+    		
+		inFile.open(fileName);
+    		inFile.getline(fileName, 10000);
+    		temp = strtok(fileName, " ");
+    		while(temp != NULL){
+		
+      			firstNames.push_back(temp);
+      			temp = strtok(NULL, " ");
     
-   	 }
+   		}
+   	 	char fileName2[25] = "lastName.txt";
+   	 	inFile2.open(fileName2);
+    		inFile2.getline(fileName2, 10000);
+    		temp1 = strtok(fileName2, " ");
+    		while(temp1 != NULL){
+		
+      			lastNames.push_back(temp1);
+      			temp1 = strtok(NULL, " ");
+    
+   		}
 	    //gets number of random ones to be generated
 		cout << "Enter the number of students to be generated: "<<endl;;
 		cout << "> ";
-	        cin>> number;
-		cin.get();
+	        cin >> number;
+		for(vector<char*>::iterator it = firstNames.begin(); it!=firstNames.end(); ++it){
+			cout << *it << endl;
+		}
+		//cin.get();
 		//makes the random students, loop this
-		for(int i =0; i<number, i++;){
+		for(int a =0; a<number; a++){
+			
 			char* firstName = new char();
 			char* lastName = new char();
 			int fIndex =0;
 			int lIndex =0;
 			float randGPA = 0;
-			fIndex = rand() % firstNames.size() + 1;	
-			lIndex = rand() % lastNames.size() + 1;
+			fIndex = rand() % firstNames.size()+1 ;	
+			lIndex = rand() % lastNames.size() +1;
 			firstName = firstNames.at(fIndex-1);
 			lastName = lastNames.at(lIndex-1);
 			randGPA = ((double) rand() / (RAND_MAX)) * 4;
@@ -164,17 +172,18 @@ int main(){
 			temp->lastName = lastName;
 			temp->gpa = randGPA;
 			temp->studentID = largestID+1;		
-	   //put them in one by one
+	   		cout << "\nfirst Name:"<<firstName;
+			cout << "last name: "<< lastName;
 		
-		int index = hashValue(largestID+1, size);
-	        bool valid = add(hashTable, index, temp);
-		if(!valid){
-		//rehash the table
-		node** newHash = new node*[size * 2];
-	  	rehash(newHash, hashTable, size);
-	  	//replaces the old table with the new one
-	  	hashTable = newHash;
-		}
+			int index = hashValue(largestID+1, size);
+	       		bool valid = add(hashTable, index, temp);
+			if(!valid){
+				//rehash the table
+				node** newHash = new node*[size * 2];
+	  			rehash(newHash, hashTable, size);
+	  			//replaces the old table with the new one
+	  			hashTable = newHash;
+			}
 		}
     }else if(strcmp(input, "PRINT") == 0){
       print(hashTable, size);
