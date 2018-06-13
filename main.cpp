@@ -57,6 +57,7 @@ int main(){
     cout << "ENTER 'PRINT' to print all the students" << endl;
     cout << "ENTER 'GEN' to generate random students" << endl;
     cout << "ENTER 'QUIT' to exit the program" << endl;
+    cout << "> ";
     cin.getline(input, 50);
     if(strcmp(input, "ADD") == 0){
       //intializes variables 
@@ -65,14 +66,18 @@ int main(){
       char* firstName = new char();
       char* lastName = new char();
       //get the info
-      cout << "Enter the student's first name" << endl;
+      cout << "Enter the student's first name:" << endl;
+      cout << "> ";
       cin.getline(firstName, 20);
-      cout << "Enter the student's last name" << endl;
+      cout << "Enter the student's last name:" << endl;
+      cout << "> ";
       cin.getline(lastName, 20);
-      cout << "Enter the student's studentID number" << endl;
+      cout << "Enter the student's studentID" << endl;
+      cout << "> ";
       cin >> studentID;
       cin.get();
-      cout << "Enter the student's gpa " << endl;
+      cout << "Enter the student's gpa: " << endl;
+      cout << "> ";
       cin >> gpa;
       cin.get();
       //checks if the ID is a repeat
@@ -102,7 +107,75 @@ int main(){
 	}
       }
     }else if(strcmp(input, "GEN") == 0){
-	   
+	    //make vector of firstNames and lastNames
+	   vector<char*> firstNames;
+	   vector<char*> lastNames;
+	    ifstream inFile;
+  	ifstream inFile2;
+	   char* temp;
+	   char* temp1;
+	    int number = 0;
+	    //takes input from 2 files, firstName.txt and lastName.txt and puts into vectors
+   		char fileName[25] = "firstName.txt"; 
+    		inFile.open(fileName);
+    	inFile.getline(fileName, 10000);
+    	temp = strtok(fileName, " ");
+    	while(temp != NULL){
+      		firstNames.push_back(temp);
+      		temp = strtok(NULL, " ");
+    	}
+   	 char fileName2[25] = "lastName.txt";
+   	 inFile2.open(fileName2);
+    	inFile2.getline(fileName2, 10000);
+    	temp1 = strtok(fileName2, " ");
+    	while(temp1 != NULL){
+      		lastNames.push_back(temp1);
+      		temp1 = strtok(NULL, " ");
+    
+   	 }
+	    //gets number of random ones to be generated
+		cout << "Enter the number of students to be generated: "<<endl;;
+		cout << "> ";
+	        cin>> number;
+		cin.get();
+		//makes the random students, loop this
+		for(int i =0; i<number, i++;){
+			char* firstName = new char();
+			char* lastName = new char();
+			int fIndex =0;
+			int lIndex =0;
+			float randGPA = 0;
+			fIndex = rand() % firstNames.size() + 1;	
+			lIndex = rand() % lastNames.size() + 1;
+			firstName = firstNames.at(fIndex-1);
+			lastName = lastNames.at(lIndex-1);
+			randGPA = ((double) rand() / (RAND_MAX)) * 4;
+			//iterate through the studentIDs and add onto the largest
+			int largestID=0;
+			for(vector<int>::iterator it = studentIDs.begin(); it!=studentIDs.end(); ++it){
+				if((*it)>largestID){
+					largestID = (*it);
+				}
+			
+			}
+			studentIDs.push_back(largestID+1);
+			Student* temp = new Student();
+			temp->firstName = firstName;
+			temp->lastName = lastName;
+			temp->gpa = randGPA;
+			temp->studentID = largestID+1;		
+	   //put them in one by one
+		
+		int index = hashValue(largestID+1, size);
+	        bool valid = add(hashTable, index, temp);
+		if(!valid){
+		//rehash the table
+		node** newHash = new node*[size * 2];
+	  	rehash(newHash, hashTable, size);
+	  	//replaces the old table with the new one
+	  	hashTable = newHash;
+		}
+		}
     }else if(strcmp(input, "PRINT") == 0){
       print(hashTable, size);
     }else if(strcmp(input, "DELETE") == 0){
