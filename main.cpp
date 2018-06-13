@@ -141,9 +141,9 @@ int main(){
 		cout << "Enter the number of students to be generated: "<<endl;;
 		cout << "> ";
 	        cin >> number;
-		for(vector<char*>::iterator it = firstNames.begin(); it!=firstNames.end(); ++it){
+		/*for(vector<char*>::iterator it = firstNames.begin(); it!=firstNames.end(); ++it){
 			cout << *it << endl;
-		}
+		}*/
 		//cin.get();
 		//makes the random students, loop this
 		for(int a =0; a<number; a++){
@@ -153,8 +153,12 @@ int main(){
 			int fIndex =0;
 			int lIndex =0;
 			float randGPA = 0;
+			
 			fIndex = rand() % firstNames.size()+1 ;	
 			lIndex = rand() % lastNames.size() +1;
+			if(fIndex == 0){
+				fIndex=1;
+			}
 			firstName = firstNames.at(fIndex-1);
 			lastName = lastNames.at(lIndex-1);
 			randGPA = ((double) rand() / (RAND_MAX)) * 4;
@@ -172,8 +176,8 @@ int main(){
 			temp->lastName = lastName;
 			temp->gpa = randGPA;
 			temp->studentID = largestID+1;		
-	   		cout << "\nfirst Name:"<<firstName;
-			cout << "last name: "<< lastName;
+	   		//cout << "\nfirst Name:"<<firstName;
+			//cout << "last name: "<< lastName;
 		
 			int index = hashValue(largestID+1, size);
 	       		bool valid = add(hashTable, index, temp);
